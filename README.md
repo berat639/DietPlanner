@@ -16,8 +16,7 @@
 
 
 ## Teknolojiler
-
-General Stock Market performanslı çalışabilmek için bazı açık kaynaklı teknolojileri kullanır.
+performanslı çalışabilmek için bazı açık kaynaklı teknolojileri kullanır.
 
 
 - [Twitter Bootstrap] - Modern web uygulamaları için arayüz stili
