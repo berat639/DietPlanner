@@ -1,0 +1,32 @@
+﻿@inject Task<NavLinks> NavLinks
+@inject IPageStateService pageStateService
+@implements IObserver
+@if (NavbarModels.IsNotNull())
+{
+    <div class="custom-navbar row">
+        @foreach (var item in NavbarModels)
+        {
+            <a href="@(item.Url)">@item.Title</a>
+        }
+    </div>
+}
+
+@code{
+    public List<NavbarModel> NavbarModels { get; set; }
+
+    private async Task InitAsync()
+    {
+        var navLinks = await NavLinks;
+        NavbarModels = pageStateService.NavbarType switch
+        {
+            NavbarType.Patient => navLinks.Patient,
+            NavbarType.Dietician => navLinks.Dietician,
+            NavbarType.Admin => navLinks.Admin,
+            _ => null
+        };
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()=>await InitAsync();
+    public void Update(ISubject subject) => InitAsync().Wait();
+}

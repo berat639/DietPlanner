@@ -1,0 +1,26 @@
+﻿{
+  "Dietician": [
+    {
+      "Title": "Diyet Atama",
+      "Url": "/dietician/report"
+    },
+    {
+      "Title": "Diyet Ekle",
+      "Url": "/diet"
+    },
+    {
+      "Title": "Hastalar",
+      "Url": "/patientlist"
+    },
+    {
+      "Title": "Hastalıklar",
+      "Url": "/disease/list"
+    }
+  ],
+    "Admin": [
+     
+    ],
+    "Patient": [
+     
+    ]
+}

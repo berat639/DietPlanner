@@ -1,0 +1,18 @@
+﻿@page "/500"
+@inject IPageStateService pageStateService
+
+<link rel="stylesheet" href="/css/specific-pages.css"/>
+
+<div class="hit-the-floor m-1">
+    500
+</div>
+
+@code{
+
+    protected override void OnInitialized()
+    {
+        pageStateService.Title = "500";
+        pageStateService.NavbarType = NavbarType.None;
+    }
+
+}

@@ -1,0 +1,18 @@
+﻿@page "/auth/unauthorized"
+@inject IPageStateService pageStateService
+
+<link rel="stylesheet" href="/css/specific-pages.css"/>
+
+<div class="hit-the-floor m-1">
+    401
+</div>
+
+@code{
+
+    protected override void OnInitialized()
+    {
+        pageStateService.Title = "Unauthorized";
+        pageStateService.NavbarType = NavbarType.None;
+    }
+
+}

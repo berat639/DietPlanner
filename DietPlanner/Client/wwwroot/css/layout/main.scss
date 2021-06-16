@@ -1,0 +1,64 @@
+﻿.main-container {
+    height: 100%;
+    width: 100%;
+    color: var(--color4);
+    background-color: var(--color4);
+
+    .page {
+        height: 100%;
+        width: 100%;
+        background-color: var(--color7);
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            background-color: var(--color6);
+            color: var(--color4);
+
+            a {
+                font-size: 1.75rem;
+                padding-left: 0.5rem;
+                color: var(--color4);
+            }
+
+            h3 {
+                flex: 1;
+                margin: 0;
+                padding-left: 1rem;
+            }
+
+            .auth-side {
+                display: flex;
+                align-items: center;
+                justify-content: right;
+
+                a {
+                    font-size: 1rem;
+                }
+            }
+
+        }
+
+        .section {
+            background-color: var(--color6);
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        .custom-navbar {
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            margin: 0;
+            overflow-x: auto;
+            padding: 0.3rem 0;
+            a {
+                display: block;
+                padding: 0.5rem 1rem;
+                margin: 0 0.2rem;
+                background-color: var(--color2);
+                color: var(--color4);
+                white-space: nowrap;
+            }
+        }
+    }
+}

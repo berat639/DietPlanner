@@ -1,0 +1,139 @@
+﻿@page "/dietician/report"
+@attribute [CustomAuthorize(RoleInfo.Dietician)]
+@inject IPageStateService pageStateService
+@inject IDieticianHttpService dieticianHttpService
+@inject HttpInterceptorService httpInterceptor
+@inject IValidator<ReportCreateDto> validator
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navManager
+@implements IDisposable
+
+
+@if (pageStateService.IsLoading)
+{
+    <Loading />
+}
+else
+{
+    <div class="section">
+        <EditForm Model="ReportCreateDto" OnValidSubmit="ValidSubmit">
+            <FluentValidationValidator Validator="validator" />
+            @if (!ErrorMessage.IsEmpty())
+            {
+                <div class="row text-danger mb-2 pl-1">
+                    @((MarkupString)ErrorMessage)
+                </div>
+            }
+            <div class="form-row mb-2">
+                <label for="DiseaseId">Hastalık</label>
+                <select id="DiseaseId" @bind="ReportCreateDto.DiseaseId" class="custom-select">
+                    @foreach (var item in Treatment.Diseases)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <ValidationMessage For="()=>ReportCreateDto.DiseaseId"></ValidationMessage>
+            </div>
+            <div class="form-row mb-2">
+                <label for="DietId">Diyet</label>
+                <select id="DietId" @bind="ReportCreateDto.DietId" class="custom-select">
+                    @foreach (var item in Treatment.Diets)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <ValidationMessage For="()=>ReportCreateDto.DietId"></ValidationMessage>
+            </div>
+            <div class="form-row mb-2">
+                <label for="PatientId">Hasta</label>
+                <select id="PatientId" @bind="ReportCreateDto.PatientId" class="custom-select">
+                    @foreach (var item in Treatment.Patients)
+                    {
+                        <option value="@item.Id">@item.IdentityNumber | @item.FirstName @item.LastName</option>
+                    }
+                </select>
+                <ValidationMessage For="()=>ReportCreateDto.PatientId"></ValidationMessage>
+            </div>
+
+            <div class="form-row mb-2">
+                <label for="StartTime">Diyet başlangıç tarihi</label>
+                <InputDate @bind-Value="ReportCreateDto.StartTime" type="date" class="form-control" id="StartTime"></InputDate>
+                <ValidationMessage For="()=>ReportCreateDto.StartTime"></ValidationMessage>
+            </div>
+
+            <div class="form-row mb-2">
+                <label for="EndTime">Diyet bitiş tarihi</label>
+                <InputDate @bind-Value="ReportCreateDto.EndTime" type="date" class="form-control" id="EndTime"></InputDate>
+                <ValidationMessage For="()=>ReportCreateDto.EndTime"></ValidationMessage>
+            </div>
+
+            <div class="form-row justify-content-center mt-1">
+                <input class="btn btn-success" type="submit" value="Diyet Ata" />
+            </div>
+
+        </EditForm>
+    </div>
+
+}
+
+<Modal Title="Bilgi" CloseTitle="İptal" TaskTitle="Rapor Sayfasına git" TaskEvent="ModalSuccessEvent">
+    <Body>
+        <p>Diyet başarı ile eklendi</p>
+        <p>Rapor sayfasına gitmek istiyor musunuz?</p>
+    </Body>
+</Modal>
+
+@code
+{
+    public ReportCreateDto ReportCreateDto { get; set; } = new() { EndTime = DateTime.Now, StartTime = DateTime.Now };
+    public string ErrorMessage { get; set; }
+
+    public TreatmentDto Treatment { get; set; } = new();
+
+    public Guid ReportId { get; set; }
+    protected async Task InitAsync()
+    {
+        pageStateService.IsLoading = true;
+        var response = await dieticianHttpService.GetTreatmentAsync();
+        if (response.IsSuccessful)
+            Treatment = response.Data;
+        pageStateService.IsLoading = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        pageStateService.Title = "Diyet Atama";
+        pageStateService.NavbarType = NavbarType.Dietician;
+        httpInterceptor.RegisterEvent();
+        await InitAsync();
+    }
+
+    protected async Task ValidSubmit()
+    {
+        pageStateService.IsLoading = true;
+        var response = await dieticianHttpService.CreateReportAsync(ReportCreateDto);
+        pageStateService.IsLoading = false;
+        if (response.IsSuccessful)
+        {
+            ReportId = response.Data;
+            await jsRuntime.InvokeVoidAsync("showModal", "modal");
+        }
+        else
+        {
+            ErrorMessage = response.ErrorData.GetErrors("<br/>");
+        }
+
+    }
+
+    protected async Task ModalSuccessEvent()
+    {
+        await jsRuntime.InvokeVoidAsync("closeModal", "modal");
+        navManager.NavigateTo($"{UrlInfo.Report}/{ReportId}");
+    }
+
+    public void Dispose()
+    {
+        httpInterceptor.DisposeEvent();
+    }
+
+}

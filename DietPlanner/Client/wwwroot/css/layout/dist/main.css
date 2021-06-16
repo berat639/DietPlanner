@@ -1,0 +1,55 @@
+.main-container {
+  height: 100%;
+  width: 100%;
+  color: var(--color4);
+  background-color: var(--color4);
+}
+.main-container .page {
+  height: 100%;
+  width: 100%;
+  background-color: var(--color7);
+}
+.main-container .page .page-header {
+  display: flex;
+  align-items: center;
+  background-color: var(--color6);
+  color: var(--color4);
+}
+.main-container .page .page-header a {
+  font-size: 1.75rem;
+  padding-left: 0.5rem;
+  color: var(--color4);
+}
+.main-container .page .page-header h3 {
+  flex: 1;
+  margin: 0;
+  padding-left: 1rem;
+}
+.main-container .page .page-header .auth-side {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+.main-container .page .page-header .auth-side a {
+  font-size: 1rem;
+}
+.main-container .page .section {
+  background-color: var(--color6);
+  margin: 1rem;
+  padding: 1rem;
+}
+.main-container .page .custom-navbar {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  margin: 0;
+  overflow-x: auto;
+  padding: 0.3rem 0;
+}
+.main-container .page .custom-navbar a {
+  display: block;
+  padding: 0.5rem 1rem;
+  margin: 0 0.2rem;
+  background-color: var(--color2);
+  color: var(--color4);
+  white-space: nowrap;
+}
